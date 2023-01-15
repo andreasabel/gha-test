@@ -10,26 +10,36 @@ jobs:
       matrix:
         os:
           - macOS-12
-          - ubuntu-22.04
-          - windows-2022
+          # - ubuntu-22.04
+          # - windows-2022
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Get BNFC-2.9.4
-        run:  stack unpack BNFC-2.9.4
 
-      #  nightly-2022-05-12 is GHC 9.2.2
-      - name: Build with GHC 9.2.2
-        working-directory: BNFC-2.9.4
+      - name: Get hackage-cli-0.1.0.0
         run: |
-          stack --resolver nightly-2022-05-12 init --force
+          cabal update
+          cabal unpack hackage-cli-0.1.0.0
+
+      - name: Build hackage-cli with GHC 9.4.3
+        working-directory: hackage-cli-0.1.0.0
+        run: |
+          stack --resolver nightly-2022-12-22 init --force
           stack build
           stack test
 
-      #  nightly-2022-08-15 is GHC 9.2.4
-      - name: Build with GHC 9.2.4
-        working-directory: BNFC-2.9.4
+      - name: Install stack-clean-old with GHC 9.4.4
+        run:  stack install --resolver=nightly-2022-01-15 stack-clean-old
+
+      - name: Test stack-clean-old
+        run:  stack-clean-old --help
+
+      - name: Remove GHC 9.4.3 with stack-clean-old
+        run:  stack-clean-old keep-minor --delete
+
+      - name: Build hackage-cli with GHC 9.4.4
+        working-directory: hackage-cli-0.1.0.0
         run: |
-          stack --resolver nightly-2022-08-15 init --force
+          stack --resolver nightly-2023-01-15 init --force
           stack build
           stack test
