@@ -4,7 +4,7 @@ on:
   - workflow_dispatch
 
 jobs:
-  build-BNFC:
+  build:
     strategy:
       fail-fast: false
       matrix:
@@ -24,7 +24,7 @@ jobs:
       - name: Build hackage-cli with GHC 9.4.3
         working-directory: hackage-cli-0.1.0.0
         run: |
-          stack --resolver nightly-2022-12-22 init --force
+          stack --resolver nightly-2022-12-22 init --ignore-subdirs --force
           stack build
           stack test
 
@@ -40,6 +40,6 @@ jobs:
       - name: Build hackage-cli with GHC 9.4.4
         working-directory: hackage-cli-0.1.0.0
         run: |
-          stack --resolver nightly-2023-01-15 init --force
+          stack --resolver nightly-2023-01-15 init --ignore-subdirs --force
           stack build
           stack test
