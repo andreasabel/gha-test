@@ -31,10 +31,10 @@ jobs:
       - name: Install stack-clean-old with GHC 9.4.4
         run:  |
           echo "${HOME}/.local/bin" >> "${GITHUB_PATH}"
-          stack install --resolver=nightly-2022-01-15 stack-clean-old
+          stack install --resolver=nightly-2023-01-15 stack-clean-old
 
       - name: Test stack-clean-old
-        run:  stack-clean-old --help
+        run:  stack-clean-old keep-minor
 
       - name: Remove GHC 9.4.3 with stack-clean-old
         run:  stack-clean-old keep-minor --delete
