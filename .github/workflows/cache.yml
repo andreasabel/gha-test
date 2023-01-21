@@ -28,14 +28,15 @@ jobs:
       if:   ${{ steps.cache-restore.outputs.cache-hit }}
       run:  cat date.txt
 
+    # Checkout is needed for using gh
+    # Need to do this before writing any new files, as checkout deletes everything
+    - uses: actions/checkout@v3
+      if:   ${{ steps.cache-restore.outputs.cache-hit }}
+
     - name: Save the date
       run:  |
         date
         date > date.txt
-
-    # Checkout is needed for using gh
-    - uses: actions/checkout@v3
-      if:   ${{ steps.cache-restore.outputs.cache-hit }}
 
     - name: Clear the cache
       if:   ${{ steps.cache-restore.outputs.cache-hit }}
