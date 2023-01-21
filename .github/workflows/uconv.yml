@@ -26,9 +26,9 @@ jobs:
       - name: Version of uconv (catch error)
         run:  uconv -V || true
 
-      - name: macOS: setup PATH for uconv
+      - name: "macOS: setup PATH for uconv"
         if:   ${{ runner.os == 'macOS' }}
-        run:  echo "$(brew --prefix)/opt/icu4c/bin" >> ${GITHUB_PATH}
+        run:  echo "$(brew --prefix)/opt/icu4c/bin" >> "${GITHUB_PATH}"
 
       - name: Version of uconv (do not catch error)
         run:  uconv -V
