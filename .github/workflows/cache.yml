@@ -1,3 +1,4 @@
+# Adapted from: https://github.com/actions/cache/issues/342#issuecomment-1363953531
 
 on:
   - push
@@ -29,11 +30,11 @@ jobs:
         date
         date > date.txt
 
-    # - name: Clear the cache
-    #   if:   ${{ steps.cache-restore.outputs.cache-hit }}
-    #   run: |
-    #     gh extension install actions/gh-actions-cache
-    #     gh actions-cache delete the-key --confirm
+    - name: Clear the cache
+      if:   ${{ steps.cache-restore.outputs.cache-hit }}
+      run: |
+        gh extension install actions/gh-actions-cache
+        gh actions-cache delete the-key --confirm
 
     - name: The cache
       uses: actions/cache/save@v3
