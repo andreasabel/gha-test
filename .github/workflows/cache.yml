@@ -9,6 +9,9 @@ defaults:
   run:
     shell: bash
 
+env:
+  GH_TOKEN: ${{ github.token }}
+
 jobs:
   cache-test:
     runs-on: ubuntu-latest
