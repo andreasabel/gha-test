@@ -30,7 +30,8 @@ jobs:
 
     # Checkout is needed for using gh
     # Need to do this before writing any new files, as checkout deletes everything
-    - uses: actions/checkout@v3
+    - name: Checkout the repo
+      uses: actions/checkout@v3
       if:   ${{ steps.cache-restore.outputs.cache-hit }}
 
     - name: Save the date
@@ -44,7 +45,7 @@ jobs:
         gh extension install actions/gh-actions-cache
         gh actions-cache delete the-key --confirm
 
-    - name: The cache
+    - name: Save the cache
       uses: actions/cache/save@v3
       # if: always()  # save cache even fails
       with:
