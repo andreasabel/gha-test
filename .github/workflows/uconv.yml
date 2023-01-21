@@ -36,3 +36,6 @@ jobs:
 
       - name: Version of uconv (do not catch error)
         run:  uconv -V
+
+      - name: Extract ICU version
+        run:  uconv --version | sed -nr 's/uconv v.+ ICU ([0-9.]+)/\1/p'
