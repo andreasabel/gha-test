@@ -1,0 +1,43 @@
+
+on:
+  - push
+  - pull_request
+  - workflow_dispatch
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  cache-test:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Restore cache
+      id: cache-restore
+      uses: actions/cache/restore@v3
+      with:
+        path: date.txt
+        key: the-key
+
+    - name: Old date
+      if:   ${{ steps.cache-restore.outputs.cache-hit }}
+      run:  cat date.txt
+
+    - name: Save the date
+      run:  |
+        date
+        date > date.txt
+
+    # - name: Clear the cache
+    #   if:   ${{ steps.cache-restore.outputs.cache-hit }}
+    #   run: |
+    #     gh extension install actions/gh-actions-cache
+    #     gh actions-cache delete the-key --confirm
+
+    - name: The cache
+      uses: actions/cache/save@v3
+      # if: always()  # save cache even fails
+      with:
+        path: date.txt
+        key:  the-key
