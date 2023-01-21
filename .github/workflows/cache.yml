@@ -33,6 +33,10 @@ jobs:
         date
         date > date.txt
 
+    # Checkout is needed for using gh
+    - uses: actions/checkout@v3
+      if:   ${{ steps.cache-restore.outputs.cache-hit }}
+
     - name: Clear the cache
       if:   ${{ steps.cache-restore.outputs.cache-hit }}
       run: |
