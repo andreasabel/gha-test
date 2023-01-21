@@ -1,0 +1,35 @@
+# Information about virtual environment
+
+on:
+  - push
+  - pull_request
+  - workflow_dispatch
+
+jobs:
+  pkg-config:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macOS-10.15
+          - macOS-11
+          - macOS-12
+          - ubuntu-18.04
+          - ubuntu-20.04
+          - ubuntu-22.04
+          - windows-2019
+          - windows-2022
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: pkg-config
+        run: pkg-config --list-all
+
+      - name: Version of uconv
+        run: uconv -V
+
+      - name: Version of icuinfo
+        run: icuinfo -V
+
+      - name: icuinfo
+        run: icuinfo
