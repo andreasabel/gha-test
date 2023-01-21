@@ -1,0 +1,34 @@
+# Get version of ICU
+
+on:
+  - push
+  - pull_request
+  - workflow_dispatch
+
+jobs:
+  pkg-config:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macOS-10.15
+          - macOS-11
+          - macOS-12
+          - ubuntu-18.04
+          - ubuntu-20.04
+          - ubuntu-22.04
+          - windows-2019
+          - windows-2022
+    runs-on: ${{ matrix.os }}
+
+    steps:
+
+      - name: Version of uconv (catch error)
+        run:  uconv -V || true
+
+      - name: macOS: setup PATH for uconv
+        if:   ${{ runner.os == 'macOS' }}
+        run:  echo "$(brew --prefix)/opt/icu4c/bin" >> ${GITHUB_PATH}
+
+      - name: Version of uconv (do not catch error)
+        run:  uconv -V
