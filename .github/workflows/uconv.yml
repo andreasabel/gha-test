@@ -5,6 +5,10 @@ on:
   - pull_request
   - workflow_dispatch
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   pkg-config:
     strategy:
