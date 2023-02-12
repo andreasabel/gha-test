@@ -14,15 +14,33 @@ env:
 
 jobs:
   cache-test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest,windows-latest]
+
+    env:
+      key: ${{ matrix.os }}
+      msys2-path: 'C:\msys64\mingw64\bin;C:\msys64\usr\bin'
+
     steps:
+
+    - name: Set up MSYS2 PATH (Windows)
+      if: ${{ runner.os == 'Windows' }}
+      run: |
+        PATH="${PATH};${{ env.msys2-path }}"
+        which pacman
+        which pkg-config
+        echo "${{ env.msys2-path }}" >> "${GITHUB_PATH}"
 
     - name: Restore cache
       id: cache-restore
       uses: actions/cache/restore@v3
       with:
         path: date.txt
-        key: the-key
+        key: ${{ env.key }}
 
     - name: Old date
       if:   ${{ steps.cache-restore.outputs.cache-hit }}
@@ -43,11 +61,11 @@ jobs:
       if:   ${{ steps.cache-restore.outputs.cache-hit }}
       run: |
         gh extension install actions/gh-actions-cache
-        gh actions-cache delete the-key --confirm
+        gh actions-cache delete ${{ env.key }} --confirm
 
     - name: Save the cache
       uses: actions/cache/save@v3
       # if: always()  # save cache even fails
       with:
         path: date.txt
-        key:  the-key
+        key:  ${{ env.key }}
