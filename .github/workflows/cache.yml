@@ -31,9 +31,12 @@ jobs:
     - name: Set up MSYS2 PATH (Windows)
       if: ${{ runner.os == 'Windows' }}
       run: |
+        which pacman || true
+        which pkg-config || true
         PATH="${PATH};${{ env.msys2-path }}"
         which pacman
         which pkg-config
+        echo "${PATH}"
         echo "${{ env.msys2-path }}" >> "${GITHUB_PATH}"
 
     - name: Restore cache
