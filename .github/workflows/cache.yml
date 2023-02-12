@@ -41,6 +41,16 @@ jobs:
         pacman --noconfirm -S mingw-w64-x86_64-pkg-config mingw-w64-x86_64-icu
       # /c/msys64/usr/bin/pacman --noconfirm -S mingw-w64-x86_64-pkg-config mingw-w64-x86_64-icu
       # echo "${{ env.msys2-path }}" >> "${GITHUB_PATH}"
+      continue-on-error: true
+
+    - name: Call pacman
+      if: ${{ runner.os == 'Windows' }}
+      shell: pwsh
+      run: |
+        $env:PATH = "C:\msys64\mingw64\bin;C:\msys64\usr\bin;$origPath;$env:PATH"
+        pacman --noconfirm -S mingw-w64-x86_64-pkg-config mingw-w64-x86_64-icu
+
+
 
     - name: Restore cache
       id: cache-restore
