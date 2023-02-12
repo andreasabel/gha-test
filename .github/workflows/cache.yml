@@ -49,9 +49,11 @@ jobs:
       if: ${{ runner.os == 'Windows' }}
       shell: pwsh
       run: |
-        $env:PATH = "C:\msys64\mingw64\bin;C:\msys64\usr\bin;$origPath;$env:PATH"
+        # $env:PATH = "C:\msys64\mingw64\bin;C:\msys64\usr\bin;$origPath;$env:PATH"
+        $env:PATH = "C:\msys64\mingw64\bin;$env:PATH"
         pacman --noconfirm -S mingw-w64-x86_64-pkg-config mingw-w64-x86_64-icu
         which pkg-config
+        pkg-config --modversion icu-i18n
 
 
 
