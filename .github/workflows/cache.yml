@@ -51,6 +51,7 @@ jobs:
       run: |
         $env:PATH = "C:\msys64\mingw64\bin;C:\msys64\usr\bin;$origPath;$env:PATH"
         pacman --noconfirm -S mingw-w64-x86_64-pkg-config mingw-w64-x86_64-icu
+        which pkg-config
 
 
 
