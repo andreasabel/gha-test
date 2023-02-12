@@ -50,12 +50,22 @@ jobs:
       shell: pwsh
       run: |
         # $env:PATH = "C:\msys64\mingw64\bin;C:\msys64\usr\bin;$origPath;$env:PATH"
-        $env:PATH = "C:\msys64\mingw64\bin;$env:PATH"
+        $env:PATH = "C:\msys64\usr\bin;$env:PATH"
         pacman --noconfirm -S mingw-w64-x86_64-pkg-config mingw-w64-x86_64-icu
+      # which pkg-config
+      # pkg-config --modversion icu-i18n
+
+    - name: Setup MSYS path
+      if: ${{ runner.os == 'Windows' }}
+      shell: pwsh
+      run: |
+        echo "C:\msys64\mingw64\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
+
+    - name: Call pkg-config
+      run: |
         which pkg-config
         pkg-config --modversion icu-i18n
-
-
+      continue-on-error: true
 
     - name: Restore cache
       id: cache-restore
