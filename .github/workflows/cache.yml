@@ -33,11 +33,12 @@ jobs:
       run: |
         which pacman || true
         which pkg-config || true
-        PATH="${PATH};${{ env.msys2-path }}"
+        PATH="${PATH}:${{ env.msys2-path }}"
         which pacman
         which pkg-config
         echo "${PATH}"
-        echo "${{ env.msys2-path }}" >> "${GITHUB_PATH}"
+        /c/msys64/usr/bin/pacman --noconfirm -S mingw-w64-x86_64-pkg-config mingw-w64-x86_64-icu
+      # echo "${{ env.msys2-path }}" >> "${GITHUB_PATH}"
 
     - name: Restore cache
       id: cache-restore
