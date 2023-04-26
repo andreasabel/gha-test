@@ -1,0 +1,18 @@
+
+on:
+  - push
+  - pull_request
+  - workflow_dispatch
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  ghcup:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        ghcup install ghc 7.10.3 --set
+    - run: |
+        ghc -V
