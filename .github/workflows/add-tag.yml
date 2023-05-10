@@ -18,7 +18,7 @@ jobs:
     - run: |
         git config user.name "${GITHUB_ACTOR}"
         git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-        git tag -f -a now -m "Tag created $(date -u -I seconds)"
+        git tag -f -a now -m "Tag created $(date -u -Iseconds)"
         git push --force origin now
       env:
         GITHUB_TOKEN: ${{ github.token }}
