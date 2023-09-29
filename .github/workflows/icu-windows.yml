@@ -1,0 +1,33 @@
+on:
+  - push
+  - pull_request
+  - workflow_dispatch
+
+jobs:
+  pkg-config:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+        # - macOS-11
+        # - macOS-12
+        # - macOS-13
+        # - ubuntu-20.04
+        # - ubuntu-22.04
+        # - windows-2019
+          - windows-2022
+    runs-on: ${{ matrix.os }}
+
+    steps:
+
+    - name: Install the ICU library (Windows)
+      if: ${{ runner.os == 'Windows' }}
+      shell: pwsh
+      run: |
+        $env:PATH = "C:\msys64\usr\bin;$env:PATH"
+        pacman --noconfirm -Sy msys2-keyring mingw-w64-x86_64-pkg-config mingw-w64-x86_64-icu
+        echo "C:\msys64\mingw64\bin" | Out-File -FilePath "$env:GITHUB_PATH" -Append
+
+    - run: pkg-config --list-all
+
+    - run: pkg-config --modversion icu-i18n
