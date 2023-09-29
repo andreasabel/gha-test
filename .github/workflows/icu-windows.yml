@@ -36,5 +36,7 @@ jobs:
       # pacman --noconfirm -Sy msys2-keyring mingw-w64-x86_64-pkg-config mingw-w64-x86_64-icu
 
     - run: pkg-config --list-all
+      shell: bash
 
     - run: pkg-config --modversion icu-i18n
+      shell: bash
