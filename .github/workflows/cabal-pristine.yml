@@ -1,0 +1,66 @@
+on:
+  - push
+  - pull_request
+  - workflow_dispatch
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  pkg-config:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+        # - macOS-11
+          - macOS-12
+          - macOS-13
+        # - ubuntu-20.04
+          - ubuntu-22.04
+        # - windows-2019
+          - windows-2022
+    runs-on: ${{ matrix.os }}
+
+    steps:
+
+    - name: Cabal version, config file
+      run: |
+        echo CABAL_EXE="$(which cabal)"                         >> "${GITHUB_ENV}"
+        echo CABAL_VERSION="$(cabal --numeric-version)"         >> "${GITHUB_ENV}"
+        echo CABAL_CONFIG_FROM_HELP="$(cabal --help | tail -1)" >> "${GITHUB_ENV}"
+
+    ## Windows
+
+    - if: ${{ runner.os == 'Windows' }}
+      run: |
+        ls -al c:/cabal
+
+    - if: ${{ runner.os == 'Windows' }}
+      run: |
+        ls -al "$APPDATA/cabal"
+
+    - if: ${{ runner.os == 'Windows' }}
+      run: |
+        ls -al "$LOCALAPPDATA/cabal"
+
+    ## Non-windows
+    - if: ${{ runner.os != 'Windows' }}
+      run: |
+        ls -al ~/.cabal
+
+    - if: ${{ runner.os != 'Windows' }}
+      run: |
+        ls -al ~/.config/cabal
+
+    - if: ${{ runner.os != 'Windows' }}
+      run: |
+        ls -al ~/.cache/cabal
+
+    - if: ${{ runner.os != 'Windows' }}
+      run: |
+        ls -al ~/.local/state/cabal
+
+    - if: ${{ runner.os != 'Windows' }}
+      run: |
+        ls -al ~/.local/bin
