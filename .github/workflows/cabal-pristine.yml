@@ -33,6 +33,12 @@ jobs:
 
     - name: Home
       run: |
+        cd ~
+        pwd
+        ls -al
+
+    - name: Current directory
+      run: |
         pwd
         ls -al
 
