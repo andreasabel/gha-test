@@ -1,4 +1,4 @@
-name: cabal-pristine
+name: cabal-config
 
 on:
   - push
@@ -15,16 +15,100 @@ jobs:
       fail-fast: false
       matrix:
         os:
-        # - macOS-11
+          - macOS-11
           - macOS-12
           - macOS-13
-        # - ubuntu-20.04
+          - ubuntu-20.04
           - ubuntu-22.04
-        # - windows-2019
+          - windows-2019
           - windows-2022
     runs-on: ${{ matrix.os }}
 
     steps:
+
+    - name: Cabal version, config file
+      run: |
+        echo CABAL_EXE="$(which cabal)"                         >> "${GITHUB_ENV}"
+        echo CABAL_VERSION="$(cabal --numeric-version)"         >> "${GITHUB_ENV}"
+        echo CABAL_CONFIG_FROM_HELP="$(cabal --help | tail -1)" >> "${GITHUB_ENV}"
+        cabal --help || true
+
+    - name: Home
+      run: |
+        cd ~
+        pwd
+        ls -al
+
+    - name: Current directory
+      run: |
+        pwd
+        ls -al
+
+    - name: Cabal config file
+      run: |
+        cat "${CABAL_CONFIG_FROM_HELP}" || true
+
+    ## Windows
+
+    - if: ${{ runner.os == 'Windows' }}
+      run: |
+        ls -al /c/cabal || true
+
+    - if: ${{ runner.os == 'Windows' }}
+      run: |
+        ls -al "$APPDATA" || true
+
+    - if: ${{ runner.os == 'Windows' }}
+      run: |
+        ls -al "$APPDATA/cabal" || true
+
+    - if: ${{ runner.os == 'Windows' }}
+      run: |
+        ls -al "$LOCALAPPDATA" || true
+
+    - if: ${{ runner.os == 'Windows' }}
+      run: |
+        ls -al "$LOCALAPPDATA/cabal" || true
+
+    ## Non-windows
+    - if: ${{ runner.os != 'Windows' }}
+      run: |
+        ls -al ~/.cabal || true
+
+    - if: ${{ runner.os != 'Windows' }}
+      run: |
+        ls -al ~/.config/cabal || true
+
+    - if: ${{ runner.os != 'Windows' }}
+      run: |
+        ls -al ~/.cache/cabal || true
+
+    - if: ${{ runner.os != 'Windows' }}
+      run: |
+        ls -al ~/.local/state/cabal || true
+
+    - if: ${{ runner.os != 'Windows' }}
+      run: |
+        ls -al ~/.local/bin || true
+
+  cabal-latest:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macOS-11
+          - macOS-12
+          - macOS-13
+          - ubuntu-20.04
+          - ubuntu-22.04
+          - windows-2019
+          - windows-2022
+    runs-on: ${{ matrix.os }}
+
+    steps:
+
+    - run: |
+        ghcup install cabal --set
 
     - name: Cabal version, config file
       run: |
