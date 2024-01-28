@@ -29,6 +29,7 @@ jobs:
         echo CABAL_EXE="$(which cabal)"                         >> "${GITHUB_ENV}"
         echo CABAL_VERSION="$(cabal --numeric-version)"         >> "${GITHUB_ENV}"
         echo CABAL_CONFIG_FROM_HELP="$(cabal --help | tail -1)" >> "${GITHUB_ENV}"
+        cabal --help || true
 
     - name: Home
       run: |
