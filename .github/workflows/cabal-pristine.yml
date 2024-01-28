@@ -1,3 +1,5 @@
+name: cabal-pristine
+
 on:
   - push
   - pull_request
@@ -8,7 +10,7 @@ defaults:
     shell: bash
 
 jobs:
-  pkg-config:
+  cabal-pristine:
     strategy:
       fail-fast: false
       matrix:
@@ -50,11 +52,19 @@ jobs:
 
     - if: ${{ runner.os == 'Windows' }}
       run: |
-        ls -al c:/cabal || true
+        ls -al /c/cabal || true
+
+    - if: ${{ runner.os == 'Windows' }}
+      run: |
+        ls -al "$APPDATA" || true
 
     - if: ${{ runner.os == 'Windows' }}
       run: |
         ls -al "$APPDATA/cabal" || true
+
+    - if: ${{ runner.os == 'Windows' }}
+      run: |
+        ls -al "$LOCALAPPDATA" || true
 
     - if: ${{ runner.os == 'Windows' }}
       run: |
