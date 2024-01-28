@@ -30,37 +30,41 @@ jobs:
         echo CABAL_VERSION="$(cabal --numeric-version)"         >> "${GITHUB_ENV}"
         echo CABAL_CONFIG_FROM_HELP="$(cabal --help | tail -1)" >> "${GITHUB_ENV}"
 
+    - name: Cabal config file
+      run: |
+        cat "${CABAL_CONFIG_FROM_HELP}" || true
+
     ## Windows
 
     - if: ${{ runner.os == 'Windows' }}
       run: |
-        ls -al c:/cabal
+        ls -al c:/cabal || true
 
     - if: ${{ runner.os == 'Windows' }}
       run: |
-        ls -al "$APPDATA/cabal"
+        ls -al "$APPDATA/cabal" || true
 
     - if: ${{ runner.os == 'Windows' }}
       run: |
-        ls -al "$LOCALAPPDATA/cabal"
+        ls -al "$LOCALAPPDATA/cabal" || true
 
     ## Non-windows
     - if: ${{ runner.os != 'Windows' }}
       run: |
-        ls -al ~/.cabal
+        ls -al ~/.cabal || true
 
     - if: ${{ runner.os != 'Windows' }}
       run: |
-        ls -al ~/.config/cabal
+        ls -al ~/.config/cabal || true
 
     - if: ${{ runner.os != 'Windows' }}
       run: |
-        ls -al ~/.cache/cabal
+        ls -al ~/.cache/cabal || true
 
     - if: ${{ runner.os != 'Windows' }}
       run: |
-        ls -al ~/.local/state/cabal
+        ls -al ~/.local/state/cabal || true
 
     - if: ${{ runner.os != 'Windows' }}
       run: |
-        ls -al ~/.local/bin
+        ls -al ~/.local/bin || true
