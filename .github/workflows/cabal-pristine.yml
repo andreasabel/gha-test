@@ -30,6 +30,11 @@ jobs:
         echo CABAL_VERSION="$(cabal --numeric-version)"         >> "${GITHUB_ENV}"
         echo CABAL_CONFIG_FROM_HELP="$(cabal --help | tail -1)" >> "${GITHUB_ENV}"
 
+    - name: Home
+      run: |
+        pwd
+        ls -al
+
     - name: Cabal config file
       run: |
         cat "${CABAL_CONFIG_FROM_HELP}" || true
