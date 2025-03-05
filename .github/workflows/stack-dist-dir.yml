@@ -1,0 +1,24 @@
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: haskell-actions/setup@v2
+      with:
+        ghc-version: 9.10.1
+        stack-version: 3.3.1
+        enable-stack: true
+    - run: |
+        echo "resolver: nightly-2025-03-01" > stack.yaml
+        echo "name: foo" > package.yaml
+        stack setup
+    - run: |
+        echo "dist-dir w/  system-ghc: $(stack --system-ghc path --dist-dir)"
+        echo "dist-dir w/o system-ghc: $(stack path --dist-dir)"
