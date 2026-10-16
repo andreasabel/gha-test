@@ -1,0 +1,47 @@
+name: haskell-macos-26-arm
+
+on:
+  - push
+  - pull_request
+  - workflow_dispatch
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  haskell-macos:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-26-arm
+    runs-on: ${{ matrix.os }}
+
+    steps:
+
+    - name: Work around broken MacOSX27.0.sdk (runner-images#14940)
+      run: |
+        echo "Available Xcodes:"; ls -d /Applications/Xcode*.app || true
+        echo "Available CLT SDKs:"; ls /Library/Developer/CommandLineTools/SDKs || true
+        echo "Original SDKROOT=${SDKROOT}"
+
+        # Prefer a stable Xcode over the Command Line Tools
+        XCODE=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -n1)
+        echo "XCODE=${XCODE}"
+        SDK=$(xcrun --sdk macosx --show-sdk-path)
+        echo "Original SDK: ${SDK}"
+
+        # if [ -n "${XCODE}" ]; then
+        #   sudo xcode-select -s "${XCODE}/Contents/Developer"
+        # fi
+
+        # SDK=$(xcrun --sdk macosx --show-sdk-path)
+        # echo "Using SDK: ${SDK}"
+        # echo "SDKROOT=${SDK}" >> "${GITHUB_ENV}"
+
+    - uses: haskell-actions/setup@latest
+      with:
+        ghc-version: 'latest'
+
+    - run: cabal install alex
