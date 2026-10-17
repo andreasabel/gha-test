@@ -33,7 +33,7 @@ jobs:
         echo "Original SDK: ${SDK}"
 
         echo "Switching to Command Line Tools"
-        xcode-select -s /Library/Developer/CommandLineTools
+        sudo xcode-select -s /Library/Developer/CommandLineTools
         echo "New SDKROOT=${SDKROOT}"
 
         # if [ -n "${XCODE}" ]; then
