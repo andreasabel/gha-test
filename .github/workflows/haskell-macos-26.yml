@@ -38,7 +38,8 @@ jobs:
 
         # SDK=$(xcrun --sdk macosx --show-sdk-path)
         # echo "Using SDK: ${SDK}"
-        # echo "SDKROOT=${SDK}" >> "${GITHUB_ENV}"
+        echo "Setting SDKROOT"
+        echo "SDKROOT=${SDK}" >> "${GITHUB_ENV}"
 
     - uses: haskell-actions/setup@latest
       with:
